@@ -1,0 +1,11 @@
+version: '3'
+services:
+  web:
+    build: ./
+    volumes:
+      - ./app:/app
+    ports:
+      - "8080:8080"
+      - "5678:5678"
+    env_file: development.env
+    command: /start-reload.sh
