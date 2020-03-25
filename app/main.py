@@ -27,6 +27,7 @@ index = """<html>
 <body>
     <h1>Subscribe for our newsletter</h1>
     <a href="/items/1">A link</a>
+    <a href="/page">A page</a>
     <form action="" method="post">
         <div>
             <label for="name">Enter your name: </label>
@@ -42,6 +43,8 @@ index = """<html>
     </form>
 </body>
 </html>"""
+
+page = """<html><head><title>Damn Vulerable Python Web App</title></head><body><a href="/">back to home</a></body></html>"""
 
 app.add_middleware(
     CORSMiddleware,
@@ -63,12 +66,15 @@ async def add_process_time_header(request: Request, call_next):
 
 
 @app.get("/", response_class=HTMLResponse)
-def read_root(req: Request, cookie_value: str = Cookie(None)):
+def read_root(req: Request):
     return index
 
+@app.get("/page", response_class=HTMLResponse)
+def read_root(req: Request):
+    return page
 
 @app.post("/")
-def with_auth(req: Request, cookie_value: str = Cookie("fastapi_cookie")):
+def with_auth(req: Request):
     logger.info(req)
     response = JSONResponse(content={"msg": "cookie set"})
     response.set_cookie(key="fastapi_cookie", value="fake-cookie-session-value")
