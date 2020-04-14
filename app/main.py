@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, Request, Cookie
+from fastapi import FastAPI, Cookie, Request
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
@@ -48,7 +48,7 @@ page = """<html><head><title>Damn Vulerable Python Web App</title></head><body><
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=".+",
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -69,9 +69,11 @@ async def add_process_time_header(request: Request, call_next):
 def read_root(req: Request):
     return index
 
+
 @app.get("/page", response_class=HTMLResponse)
 def read_root(req: Request):
     return page
+
 
 @app.post("/")
 def with_auth(req: Request):
